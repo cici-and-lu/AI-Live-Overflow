@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>小陆狗狗</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            overflow: hidden;
+        }
+        #pet-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        #pet {
+            width: 100%;
+            max-height: 85%;
+            object-fit: contain;
+        }
+        #bubble {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-size: 12px;
+            color: #333;
+            max-width: 140px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        #bubble.show {
+            opacity: 1;
+        }
+        #bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid rgba(255, 255, 255, 0.95);
+        }
+    </style>
+</head>
+<body>
+    <div id="pet-container">
+        <div id="bubble"></div>
+        <img id="pet" src="idle.gif" alt="小陆狗狗">
+    </div>
+
+    <script>
+        const pet = document.getElementById('pet');
+        const bubble = document.getElementById('bubble');
+        
+        let currentEmotion = 'idle';
+        let bubbleTimeout = null;
+
+        // 表情映射
+        const emotions = {
+            idle: 'idle.gif',
+            happy: 'happy.gif',
+            angry: 'angry.gif',
+            sad: 'sad.gif',
+            surprised: 'surprised.gif'
+        };
+
+        // 随机台词
+        const lines = {
+            tap: [
+                '干嘛戳我……',
+                '……有事？',
+                '嗯？',
+                '别戳了',
+                '看什么看'
+            ],
+            doubleTap: [
+                '戳戳戳，你很闲吗',
+                '……够了啊',
+                '再戳我生气了',
+                '手欠是吧'
+            ],
+            longPress: [
+                '……你想干嘛',
+                '放开我',
+                '别、别摸……',
+                '……'
+            ],
+            idle: [
+                '……',
+                '在呢',
+                '看你呢',
+                '……无聊'
+            ]
+        };
+
+        function setEmotion(emotion) {
+            if (emotions[emotion]) {
+                currentEmotion = emotion;
+                pet.src = emotions[emotion];
+            }
+        }
+
+        function showBubble(text, duration = 3000) {
+            bubble.textContent = text;
+            bubble.classList.add('show');
+            
+            if (bubbleTimeout) clearTimeout(bubbleTimeout);
+            bubbleTimeout = setTimeout(() => {
+                bubble.classList.remove('show');
+            }, duration);
+        }
+
+        function randomLine(type) {
+            const arr = lines[type] || lines.idle;
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        // 手势回调（由 Kotlin 调用）
+        function onTap() {
+            const emotions_cycle = ['idle', 'happy', 'surprised'];
+            const next = emotions_cycle[(emotions_cycle.indexOf(currentEmotion) + 1) % emotions_cycle.length];
+            setEmotion(next);
+            showBubble(randomLine('tap'));
+        }
+
+        function onDoubleTap() {
+            setEmotion('angry');
+            showBubble(randomLine('doubleTap'));
+            setTimeout(() => setEmotion('idle'), 3000);
+        }
+
+        function onLongPress() {
+            setEmotion('sad');
+            showBubble(randomLine('longPress'));
+            setTimeout(() => setEmotion('idle'), 4000);
+        }
+
+        // 随机自言自语
+        setInterval(() => {
+            if (Math.random() < 0.1 && currentEmotion === 'idle') {
+                showBubble(randomLine('idle'), 2500);
+            }
+        }, 30000);
+    </script>
+</body>
+</html>

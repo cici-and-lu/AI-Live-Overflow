@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="32dp"
+    android:background="#FAFAFA">
+
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="160dp"
+        android:src="@drawable/preview"
+        android:scaleType="fitCenter"
+        android:layout_marginBottom="24dp" />
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="点击按钮让小陆出现在屏幕上"
+        android:textSize="16sp"
+        android:textColor="#333333"
+        android:layout_marginBottom="24dp" />
+
+    <Button
+        android:id="@+id/btnToggle"
+        android:layout_width="200dp"
+        android:layout_height="56dp"
+        android:text="放出小陆"
+        android:textSize="18sp" />
+
+</LinearLayout>
