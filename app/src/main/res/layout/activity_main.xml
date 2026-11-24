@@ -16,9 +16,10 @@
         android:layout_marginBottom="16dp"/>
 
     <TextView
+        android:id="@+id/tvStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="点击下方按钮放出小陆~"
+        android:text="点击按钮让小陆出现在屏幕上"
         android:textSize="14sp"
         android:textColor="#666666"
         android:layout_marginBottom="32dp"/>
